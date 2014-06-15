@@ -6,11 +6,9 @@ public class MovingLaserControl : MonoBehaviour {
 
 	public bool instantDeath = false;
 	public int damage = 10;
-	[Range(0.1f, 2f)]
-	public float speed = 0.8f;
+	[Range(1f, 25f)]
+	public float duration = 5f;
 
-	float trajectoryPosition = 0;
-	float direction = 1f;
 	Vector3 originPos;
 	Vector3 destination;
 
@@ -23,12 +21,12 @@ public class MovingLaserControl : MonoBehaviour {
 	}
 	
 	void FixedUpdate () {
-		Vector3 nextPos = Vector3.Lerp(originPos, destination, (trajectoryPosition / 100f));
+		Vector3 nextPos = Vector3.Lerp(originPos, destination, absoluteTriangleWave(duration, Time.fixedTime));
 		transform.position = new Vector3 (nextPos.x, transform.position.y, nextPos.z);
-		trajectoryPosition += (direction * speed);
-		if (trajectoryPosition >= 100 || trajectoryPosition <= 0) {
-			direction = -direction;
-		}
+	}
+
+	float absoluteTriangleWave(float a, float t) {
+		return Mathf.Abs(2/a * (t - a * Mathf.Floor(t/a + 0.5f)) * Mathf.Pow(-1, Mathf.Floor(t/a + 0.5f)));
 	}
 
 	void OnTriggerEnter(Collider col) {
