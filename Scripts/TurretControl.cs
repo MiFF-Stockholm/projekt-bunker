@@ -9,9 +9,11 @@ public class TurretControl : MonoBehaviour {
 	private Color yellowishColor;
 	private int distance = 35;
 	private Light spotLight;
+	private PlayerDeath playerDeath;
 
 	void Start () {
 		player = GameObject.FindGameObjectWithTag("Player");
+		playerDeath = player.GetComponent<PlayerDeath> ();
 		spotLight = GetComponentInChildren<Light>();
 		yellowishColor = spotLight.color;
 	}
@@ -22,8 +24,8 @@ public class TurretControl : MonoBehaviour {
 			flickerLight();
 			//TODO lägg till rökeffekt, brand
 		} else {
-			// titta efter spelaren
-			if (enemySpotted ()) { // om spelaren hittas, följ spelaren med strålkastaren och skjut
+			// titta efter spelaren, men bara om spelaren lever
+			if (!playerDeath.isDead() && enemySpotted ()) { // om spelaren hittas, följ spelaren med strålkastaren och skjut
 				changeLampColor(Color.red);
 				followPlayer();
 				fireAtTarget();
@@ -73,6 +75,7 @@ public class TurretControl : MonoBehaviour {
 		}
 	}
 
+	//TODO byt ut mot InvokeRepeating
 	public GameObject bulletPrefab;
 	private const int INITIAL_VELOCITY = 2500; //hastighet på kulan, påverkar bara animation
 	private const float DELAY = 0.5f; //tid mellan varje skott
@@ -90,9 +93,11 @@ public class TurretControl : MonoBehaviour {
 		spawnPos.y += 3;
 		GameObject bulletClone = Instantiate(bulletPrefab, spawnPos, transform.rotation) as GameObject;
 		Debug.Log ("Bullet: " + bulletClone);
-		bulletClone.GetComponent<BulletCollision> ().nameOfFirer = transform.name;
+		BulletCollision bulletColl = bulletClone.GetComponent<BulletCollision> ();
+		bulletColl.nameOfFirer = transform.name;
+		bulletColl.noPush = true;
 		bulletClone.rigidbody.AddForce(-transform.forward * INITIAL_VELOCITY);
-		//display muzzle flash
+		//TODO lägg till mynningsflamma
 	}
 
 	void OnTriggerEnter(Collider other) {

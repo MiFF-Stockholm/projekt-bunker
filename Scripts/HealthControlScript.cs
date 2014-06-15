@@ -4,7 +4,7 @@ using AssemblyCSharp;
 
 public class HealthControlScript : MonoBehaviour {
 
-	public int healthPoints = 100;
+	public float healthPoints = 100f;
 
 	void Start () {
 	
@@ -14,7 +14,7 @@ public class HealthControlScript : MonoBehaviour {
 	
 	}
 
-	public void meleeHit(int damage) {
+	public void meleeHit(float damage) {
 		if (!isDead()) {
 			Debug.Log ("Took " + damage + " points of damage from melee attack");
 			healthPoints -= damage;
@@ -24,7 +24,7 @@ public class HealthControlScript : MonoBehaviour {
 		}
 	}
 
-	public void projectileHit(int damage) {
+	public void projectileHit(float damage) {
 		if (!isDead()) {
 			Debug.Log ("Took " + damage + " points of damage from projectile attack");
 			healthPoints -= damage;

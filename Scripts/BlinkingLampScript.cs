@@ -4,23 +4,20 @@ using System.Collections;
 [RequireComponent(typeof(Light))]
 public class BlinkingLampScript : MonoBehaviour {
 
+	[Range(0.1f, 60f)]
 	public float blinkIntervalInSeconds = 1;
 
 	private Light lamp;
-	private float lastBlinkTime = 0;
 
 	void Start() {
 		lamp = transform.GetComponent<Light> ();
+		InvokeRepeating("blink", 0, blinkIntervalInSeconds);
 	}
 	
 	void Update () {
-		blink ();
 	}
 
 	void blink() {
-		if (Time.time - lastBlinkTime >= blinkIntervalInSeconds) {
-			lamp.enabled = !lamp.enabled;
-			lastBlinkTime = Time.time;
-		}
+		lamp.enabled = !lamp.enabled;
 	}
 }

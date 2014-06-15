@@ -76,12 +76,10 @@ public class PlayerControlScript : MonoBehaviour {
 		    || currentBaseState.IsName("Strafe_R")) {
 			if (!footStepAudio.isPlaying) {
 				footStepAudio.Play();
-				Debug.Log("Playing footsteps");
 			}
 		} else {
 			if (footStepAudio.isPlaying) {
 				footStepAudio.Stop();
-				Debug.Log("Stopping footsteps");
 			}
 		}
 

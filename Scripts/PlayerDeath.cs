@@ -41,10 +41,12 @@ public class PlayerDeath : MonoBehaviour, AssemblyCSharp.Killable {
 
 	// Anropa denna metod om du vill döda spelaren direkt
 	public void killPlayer() {
-		showDeathMessage ();
-		respawnCountDownDone = Time.time + RESPAWN_COUNTDOWN_SEC;
-		dead = true;
-		playDeathAnimation();
+		if (!dead) {
+			showDeathMessage ();
+			respawnCountDownDone = Time.time + RESPAWN_COUNTDOWN_SEC;
+			dead = true;
+			playDeathAnimation();
+		}
 	}
 
 	public void kill() {
